@@ -8,7 +8,7 @@ services:
       # Environment variables (read-only)
       - ./.env:/app/.env:ro
 
-      # Google API credentials (credentials.json, token.json)
+      # Application config (config.yaml and related app config)
       - ./config:/app/config
 
       # Shared folder for .ics files

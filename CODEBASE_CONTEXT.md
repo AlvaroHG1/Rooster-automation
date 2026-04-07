@@ -106,7 +106,7 @@ De centrale klasse die alle componenten aanstuurt:
 ### `app/core/logging_config.py` — Logging
 
 - Configureert `logging.basicConfig` met zowel file- als stdout-handlers.
-- Onderdrukt third-party loggers (`urllib3`, `googleapiclient`).
+- Onderdrukt third-party loggers (`urllib3`).
 
 ---
 
@@ -167,10 +167,10 @@ iCloud Calendar ("Rooster")
 
 ---
 
-## Dependencies (`requirements.txt`)
+## Dependencies
 
 - `playwright==1.41.0` — Headless browser automation
-- `google-auth`, `google-auth-oauthlib`, `google-api-python-client` — Google API libs (voor toekomstige Gmail API migratie)
+- `imaplib` (Python stdlib) — Gmail monitoring via IMAP
 - `pyyaml==6.0.1` — YAML config parsing
 - `python-dotenv==1.0.1` — `.env` bestand laden
 - `schedule==1.2.1` — Taak scheduling
