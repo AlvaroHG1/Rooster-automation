@@ -189,6 +189,8 @@ rooster_automation/
 
 The Docker image is based on Microsoft's official Playwright image with all Chromium dependencies pre-installed.
 
+For a practical VM + Docker deploy/update workflow, see [`DOCKER_DEPLOYMENT.md`](DOCKER_DEPLOYMENT.md).
+
 ```yaml
 # docker-compose.yml highlights
 services:
