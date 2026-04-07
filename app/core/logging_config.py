@@ -33,4 +33,3 @@ def setup_logging(level_name: str = "INFO", format_str: Optional[str] = None, fi
     
     # Set third-party loggers to warning to reduce noise
     logging.getLogger("urllib3").setLevel(logging.WARNING)
-    logging.getLogger("googleapiclient").setLevel(logging.WARNING)
