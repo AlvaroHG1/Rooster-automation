@@ -7,17 +7,12 @@ import logging
 import schedule
 import time
 from datetime import datetime
-from dotenv import load_dotenv
 
 from app.services.roi_scraper import ROIScraper
 from app.services.gmail_monitor import GmailMonitor
 from app.services.calendar_service import CalendarService
 from app.core.settings import settings
 from app.core.logging_config import setup_logging
-
-
-# Load environment variables
-load_dotenv()
 
 # Set up logging centrally
 setup_logging(

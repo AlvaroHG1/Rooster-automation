@@ -10,10 +10,22 @@ from typing import List, Optional, Union, Literal
 from pathlib import Path
 from pydantic import BaseModel, Field, field_validator, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from dotenv import load_dotenv
 
 # Get the project base directory
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 CONFIG_PATH = BASE_DIR / "config" / "config.yaml"
+ENV_PATH = BASE_DIR / ".env"
+
+# Load .env before the module-level settings instance is created.
+load_dotenv(ENV_PATH)
+
+
+def _require_non_empty(value: str, env_name: str) -> str:
+    cleaned = value.strip() if isinstance(value, str) else ""
+    if not cleaned:
+        raise ValueError(f"{env_name} must not be empty")
+    return cleaned
 
 class RoiOnlineSettings(BaseModel):
     url: str
@@ -30,6 +42,16 @@ class RoiOnlineSettings(BaseModel):
     email: str = Field(..., description="ROI_EMAIL from env")
     password: str = Field(..., description="ROI_PASSWORD from env")
 
+    @field_validator("email")
+    @classmethod
+    def validate_email(cls, value: str) -> str:
+        return _require_non_empty(value, "ROI_EMAIL")
+
+    @field_validator("password")
+    @classmethod
+    def validate_password(cls, value: str) -> str:
+        return _require_non_empty(value, "ROI_PASSWORD")
+
 class GmailSettings(BaseModel):
     check_interval_minutes: int = 10
     max_emails_to_check: int = 10
@@ -38,6 +60,16 @@ class GmailSettings(BaseModel):
     address: str = Field(..., description="GMAIL_ADDRESS from env")
     app_password: str = Field(..., description="GMAIL_APP_PASSWORD from env")
     trigger_sender: str = "noreply@staff.nl"
+
+    @field_validator("address")
+    @classmethod
+    def validate_address(cls, value: str) -> str:
+        return _require_non_empty(value, "GMAIL_ADDRESS")
+
+    @field_validator("app_password")
+    @classmethod
+    def validate_app_password(cls, value: str) -> str:
+        return _require_non_empty(value, "GMAIL_APP_PASSWORD")
 
 class ScheduleSettings(BaseModel):
     active_days: List[str] = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
@@ -59,6 +91,21 @@ class CalDavSettings(BaseModel):
     password: str
     calendar_name: str = "Rooster"
 
+    @field_validator("url")
+    @classmethod
+    def validate_url(cls, value: str) -> str:
+        return _require_non_empty(value, "CALDAV_URL")
+
+    @field_validator("username")
+    @classmethod
+    def validate_username(cls, value: str) -> str:
+        return _require_non_empty(value, "CALDAV_USERNAME")
+
+    @field_validator("password")
+    @classmethod
+    def validate_password(cls, value: str) -> str:
+        return _require_non_empty(value, "CALDAV_PASSWORD")
+
 class LoggingSettings(BaseModel):
     level: str = "INFO"
     format: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -76,7 +123,7 @@ class Settings(BaseSettings):
     logging: LoggingSettings
     
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=str(ENV_PATH),
         env_file_encoding="utf-8",
         extra="ignore"
     )
