@@ -169,7 +169,7 @@ iCloud Calendar ("Rooster")
 
 ## Dependencies
 
-- `playwright==1.41.0` — Headless browser automation
+- `playwright==1.49.0` — Headless browser automation
 - `imaplib` (Python stdlib) — Gmail monitoring via IMAP
 - `pyyaml==6.0.1` — YAML config parsing
 - `python-dotenv==1.0.1` — `.env` bestand laden
