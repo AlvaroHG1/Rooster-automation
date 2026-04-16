@@ -54,12 +54,15 @@ class GmailMonitor:
                 mail.select("inbox")
                 
                 sender = settings.gmail.trigger_sender
-                # Tighter regex/search: check specifically for "Nieuw rooster" in subject
-                search_criteria = f'(OR FROM "{sender}" FROM "rooster@roi-online.nl")'
-                
-                logger.debug(f"Searching for emails from: {sender}")
+                trigger_subject = "Nieuw rooster gepubliceerd"
+                search_criteria = (
+                    f'(OR OR FROM "{sender}" FROM "rooster@roi-online.nl" '
+                    f'SUBJECT "{trigger_subject}")'
+                )
+
+                logger.debug(f"Searching for trigger emails from {sender}, rooster@roi-online.nl, or subject: {trigger_subject}")
                 status, messages = mail.search(None, search_criteria)
-                
+
                 if status != "OK":
                     logger.error("Failed to search emails")
                     return {"found": False}
