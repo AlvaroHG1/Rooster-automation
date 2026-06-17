@@ -39,6 +39,13 @@ class GmailSettings(BaseModel):
     app_password: str = Field(..., description="GMAIL_APP_PASSWORD from env")
     trigger_sender: str = "noreply@staff.nl"
 
+    @field_validator("app_password", mode="before")
+    @classmethod
+    def normalize_app_password(cls, v):
+        if isinstance(v, str):
+            return "".join(v.split())
+        return v
+
 class ScheduleSettings(BaseModel):
     active_days: List[str] = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
     start_hour: int = 10
