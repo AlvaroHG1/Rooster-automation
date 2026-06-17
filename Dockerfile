@@ -1,5 +1,10 @@
 FROM mcr.microsoft.com/playwright/python:v1.49.0-jammy
 
+# Install timezone data so TZ=Europe/Amsterdam is honored inside the container.
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
+    rm -rf /var/lib/apt/lists/*
+
 # Create non-root user with home directory
 RUN useradd -m -u 1000 -d /home/automation automation && \
     mkdir -p /app /app/shared /app/logs /app/config && \

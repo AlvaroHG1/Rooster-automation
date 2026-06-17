@@ -75,9 +75,8 @@ class GmailMonitor:
                 latest_uid = email_ids[-1]
                 
                 if self.last_checked_uid is None:
-                    logger.info(f"First run - storing latest UID: {latest_uid.decode()}")
-                    self.last_checked_uid = latest_uid
-                    return {"found": False}
+                    logger.info(f"First run - processing latest UID: {latest_uid.decode()}")
+                    return self._process_found_email(mail, latest_uid)
                 
                 if latest_uid > self.last_checked_uid:
                     return self._process_found_email(mail, latest_uid)
