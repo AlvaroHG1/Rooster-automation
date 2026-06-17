@@ -6,7 +6,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Create non-root user with home directory
-RUN useradd -m -u 1000 -d /home/automation automation && \
+RUN useradd -m -u 10001 -d /home/automation automation && \
     mkdir -p /app /app/shared /app/logs /app/config && \
     chown -R automation:automation /app /home/automation
 
